@@ -1,29 +1,97 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Index from '../views/index'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    {
+        path: '/',
+        name: 'Index',
+        component: Index,
+        redirect: '/product',
+        children: [
+            {
+                path: '/product',
+                name: 'Product',
+                component: () => import('../views/product')
+            },
+            {
+                path: '/cart',
+                name: 'Cart',
+                component: () => import('../views/cart')
+            },
+            {
+                path: '/person',
+                name: 'Person',
+                component: () => import('../views/person')
+            },
+            {
+                path: '/classify',
+                name: 'Classify',
+                component: () => import('../views/classify'),
+                redirect: '/productList',
+                children: [
+                    {
+                        path: '/productList',
+                        name: 'ProductList',
+                        component: () => import('../views/classify/productList')
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        path: '/about',
+        name: 'About',
+        component: () => import('../views/About.vue')
+    },
+    {
+        path: '/detail',
+        name: 'Detail',
+        component: () => import('../views/product/detail')
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/login')
+    },
+    {
+        path: '/userInfo',
+        name: 'UserInfo',
+        component: () => import('../views/person/UserInfo')
+    },
+    {
+        path: '/registration',
+        name: 'Registration',
+        component: () => import('../views/login/registration')
+    },
+    {
+        path: '/forgotPassword',
+        name: 'ForgotPassword',
+        component: () => import('../views/login/forgotPassword')
+    },
+    {
+        path: '/goods',
+        name: 'Goods',
+        component: () => import('../views/cart/goods'),
+    },
+    {
+        path: '/sku',
+        name: 'Sku',
+        component: () => import('../views/cart/sku'),
+    },
+    {
+        path: '/cart',
+        name: 'CartList',
+        component: () => import('../views/cart/cart'),
+    },
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
