@@ -62,25 +62,8 @@
           </template>
         </van-field>
 
-        <!-- 密码-->
-        <van-field
-            v-model="form.rawPassword"
-            label="密码"
-            name="pattern"
-            placeholder="请输入密码"
-            :rules="[{ required: true, message: '密码不能为空' }]"
-            type="password"
-        >
-          <template #left-icon>
-            <van-icon name="edit"></van-icon>
-          </template>
-          <template #right-icon>
-            <van-icon name="closed-eye"></van-icon>
-          </template>
-        </van-field>
-
         <div style="margin: 16px;">
-          <van-button round block type="info" native-type="submit">提交</van-button>
+          <van-button round block type="info" native-type="submit">确认修改</van-button>
         </div>
       </div>
     </van-form>
@@ -106,18 +89,44 @@ export default {
         nickyName: null,
         phone: null,
         email: null,
-        rawPassword: null,
         file: null
       },
-      fileList: []
+      fileList: [],
+      token: [],
+      newToken: []
     }
   },
   created() {
-
+    if (this.$store.getters.GET_TOKEN !== '') {
+      this.token = this.$store.getters.GET_TOKEN
+      this.form.loginName = this.token.loginName
+      this.form.nickyName = this.token.nickyName
+      this.form.phone = this.token.phone
+      this.form.email = this.token.email
+      this.form.file = 'http://192.168.80.66:9000/images/' + this.token.icon
+      this.fileList = [{url: this.form.file}]
+    } else {
+      // console.log('token为空')
+    }
   },
   methods: {
     onSubmit() {
-
+      this.form.file = this.fileList[0].file
+      console.log('begin')
+      console.log(this.form)
+      console.log(this.token)
+      this.newToken = this.token
+     console.log(this.newToken)
+      // this.post(this.url.save, this.form, response => {
+      //   console.log(response)
+      //   console.log(this.form)
+      //   console.log(this.token)
+      //   this.token.loginName = this.form.loginName
+      //   this.token.nickyName = this.form.nickyName
+      //   this.token.phone = this.form.phone
+      //   this.token.email = this.form.email
+      //   // this.$router.push('/person')
+      // })
     },
     onFailed() {
       this.$notify({type: 'warning', message: '请正确输入内容!'})
