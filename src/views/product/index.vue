@@ -73,7 +73,6 @@ export default {
       this.get(this.url.list, this.query, (response) => {
         this.pages = response.pages
         this.totalProducts = response.total
-        console.log(response)
       })
     },
     getTableData() {
@@ -81,7 +80,6 @@ export default {
         for (let i = 0; i < response.records.length; i++) {
           this.list.push(response.records[i])
         }
-        console.log('加载product数据')
       })
     },
     onLoad() {
