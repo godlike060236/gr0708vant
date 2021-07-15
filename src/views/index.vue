@@ -17,7 +17,7 @@ export default {
   name: "index",
   data() {
     return {
-      active: 'product',
+      active: 0,
     };
   },
 }

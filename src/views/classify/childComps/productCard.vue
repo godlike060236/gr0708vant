@@ -48,10 +48,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.product-item{
-.space{
-  background-color: #eeeeee;
-  height: 5px;
-}
+.product-item {
+  .space {
+    background-color: #eeeeee;
+    height: 5px;
+  }
 }
 </style>

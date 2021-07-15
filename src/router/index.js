@@ -30,14 +30,6 @@ const routes = [
                 path: '/classify',
                 name: 'Classify',
                 component: () => import('../views/classify'),
-                redirect: '/productList',
-                children: [
-                    {
-                        path: '/productList',
-                        name: 'ProductList',
-                        component: () => import('../views/classify/productList')
-                    },
-                ]
             },
         ]
     },

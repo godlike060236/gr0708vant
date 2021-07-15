@@ -104,6 +104,10 @@ Vue.prototype.request = request
 
 Vue.prototype.get = (url, params, callback) => {
     request(url, 'get', params, (response) => {
+        // Notify({
+        //     type:'success',
+        //     message: response.message,
+        // })
         callback(response.obj)
     })
 }
@@ -112,7 +116,7 @@ Vue.prototype.post = (url, params, callback) => {
     request(url, 'post', params, (response) => {
         Notify({
             type:'success',
-            message: '登陆成功',
+            message: response.message,
         })
         callback(response.obj)
     })

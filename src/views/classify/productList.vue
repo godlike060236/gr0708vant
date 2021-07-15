@@ -2,7 +2,7 @@
   <div>
     <div class="product-main">
       <van-list
-          style="height:620px;width:100%;overflow-y:auto;"
+          style="height:595px;width:100%;"
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
@@ -10,6 +10,11 @@
           class="van-clearfix"
       >
         <div class="product">
+          <van-swipe :autoplay="3000" style="height: 178px;width: 100%;margin-left: 6px">
+            <van-swipe-item v-for="(image, index) in image" :key="index">
+              <img v-lazy="image"/>
+            </van-swipe-item>
+          </van-swipe>
           <ProductCard
               v-for="(item,index) in list"
               :item="item"
@@ -26,12 +31,19 @@ import ProductCard from "./childComps/productCard";
 
 export default {
   name: "ProductList",
+  props: ["query"],
   data() {
     const baseUrl = '/pms-product'
     return {
       url: {
         list: baseUrl + '/list',
+        listByCategory: baseUrl + '/listByCategory',
       },
+      image: [
+        require('@/assets/classify-swipe-image1.jpg'),
+        require('@/assets/classify-swipe-image2.jpg'),
+        require('@/assets/classify-swipe-image3.jpg')
+      ],
       list: [],
       loading: false,
       finished: false,
@@ -42,11 +54,6 @@ export default {
       products: [],
       pages: null,
       totalProducts: null,
-      query: {
-        pageNo: 0,
-        pageSize: 8,
-        name: '',
-      },
     };
   },
   components: {
@@ -58,14 +65,16 @@ export default {
   methods: {
     // 初始化判定数据
     init() {
-      this.get(this.url.list, this.query, (response) => {
+      this.get(this.url.listByCategory, this.query, (response) => {
         this.pages = response.pages
         this.totalProducts = response.total
         console.log(response)
       })
     },
+    clear(){
+    },
     getTableData() {
-      this.get(this.url.list, this.query, (response) => {
+      this.get(this.url.listByCategory, this.query, (response) => {
         for (let i = 0; i < response.records.length; i++) {
           this.list.push(response.records[i])
         }
