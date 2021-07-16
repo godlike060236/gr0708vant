@@ -4,7 +4,7 @@
         v-model="query.name"
         shape="round"
         background="#fff"
-        @search="onSearch"
+        @click="onSearch"
         placeholder="请输入搜索关键词"
     />
     <van-tabs v-model="activeTop" @click="onClickTopTag" style="margin-bottom: 5px">
@@ -57,7 +57,6 @@ export default {
       url: {
         getListById: baseUrl1 + '/getListById',
         list: baseUrl2 + '/list',
-        listByCategory: baseUrl2 + '/listByCategory',
       },
       topTags: [],
       sideTags: [],
@@ -70,6 +69,7 @@ export default {
         require('@/assets/3.jpeg'),
         require('@/assets/4.jpeg'),
       ],
+      id: 0,
       activeKey: 0,
       activeTop: 0,
       topId: 0,
@@ -84,7 +84,7 @@ export default {
         pageSize: 8,
         name: '',
         categoryId: '3',
-        id: 0,
+        keyWord: ''
       },
     }
   },
@@ -92,7 +92,7 @@ export default {
     ProductCard
   },
   created() {
-    this.get(this.url.getListById, {id: this.query.id}, (response) => {
+    this.get(this.url.getListById, {id: this.id}, (response) => {
       this.topTags = response
       this.onClickTopTag(0)
       this.init()
@@ -107,7 +107,7 @@ export default {
     },
     // 初始化页面并加载默认选定的商品分类数据
     init() {
-      this.get(this.url.listByCategory, this.query, (response) => {
+      this.get(this.url.list, this.query, (response) => {
         this.pages = response.pages
         this.totalProducts = response.total
         this.finished = false
@@ -132,13 +132,16 @@ export default {
     },
     // 加载对应分类的商品列表数据
     getTableData() {
-      this.get(this.url.listByCategory, this.query, (response) => {
+      this.get(this.url.list, this.query, (response) => {
         for (let i = 0; i < response.records.length; i++) {
           this.list.push(response.records[i])
         }
       })
     },
     onSearch() {
+      this.$router.push({
+        path: '/search',
+      })
     },
     onClickSideTag(index) {
       this.query.categoryId = this.sideTags[index].id

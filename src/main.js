@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/vant.js'
-
+import 'vant/lib/index.less';
 
 Vue.config.productionTip = false
 Vue.prototype.img = (path) => {

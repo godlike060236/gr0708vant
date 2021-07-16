@@ -5,7 +5,7 @@
         num="3"
         :price="item.price"
         desc="商品介绍"
-        :title="item.title"
+        :title="item.name"
         :thumb="img(item.img)"
         :origin-price="item.price"
         style="background-color: white"

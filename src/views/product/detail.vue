@@ -5,7 +5,6 @@
         left-text="返回"
         left-arrow
         @click-left="onClickLeft"
-        @click-right="onClickRight"
     />
     <DetailBassInfo :item="product"></DetailBassInfo>
     <div style="background-color: #f2f5f8;padding-bottom: 5px;">———— &nbsp;商品详情&nbsp; ————</div>
@@ -57,13 +56,9 @@ export default {
       })
     },
     onClickLeft() {
-      Toast('按钮');
       this.$router.push({
         path: '/product',
       })
-    },
-    onClickRight() {
-      Toast('按钮');
     },
     onClickIcon() {
       Toast('点击图标');
