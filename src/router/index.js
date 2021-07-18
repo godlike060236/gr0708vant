@@ -68,21 +68,6 @@ const routes = [
         name: 'ForgotPassword',
         component: () => import('../views/login/forgotPassword')
     },
-    {
-        path: '/goods',
-        name: 'Goods',
-        component: () => import('../views/cart/goods'),
-    },
-    {
-        path: '/sku',
-        name: 'Sku',
-        component: () => import('../views/cart/sku'),
-    },
-    {
-        path: '/cart',
-        name: 'CartList',
-        component: () => import('../views/cart/cart'),
-    },
 ]
 
 const router = new VueRouter({
