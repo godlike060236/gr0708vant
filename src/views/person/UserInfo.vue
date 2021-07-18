@@ -83,6 +83,7 @@ export default {
     return {
       url: {
         save: module + '/update',
+        getone: module + '/getone'
       },
       form: {
         loginName: null,
@@ -99,34 +100,32 @@ export default {
   created() {
     if (this.$store.getters.GET_TOKEN !== '') {
       this.token = this.$store.getters.GET_TOKEN
-      this.form.loginName = this.token.loginName
-      this.form.nickyName = this.token.nickyName
-      this.form.phone = this.token.phone
-      this.form.email = this.token.email
-      this.form.file = 'http://192.168.80.66:9000/images/' + this.token.icon
-      this.fileList = [{url: this.form.file}]
+      // console.log(this.token)
+      this.get(this.url.getone, {id: this.token}, response => {
+        //console.log(response)
+        //this is very important,update user will need the user`s id
+        this.form.id = response.id
+        this.form.loginName = response.loginName
+        this.form.nickyName = response.nickyName
+        this.form.phone = response.phone
+        this.form.email = response.email
+        this.fileList = [{url: this.img(response.icon)}]
+      })
     } else {
       // console.log('token为空')
     }
   },
   methods: {
     onSubmit() {
-      this.form.file = this.fileList[0].file
-      console.log('begin')
-      console.log(this.form)
-      console.log(this.token)
-      this.newToken = this.token
-     console.log(this.newToken)
-      // this.post(this.url.save, this.form, response => {
-      //   console.log(response)
-      //   console.log(this.form)
-      //   console.log(this.token)
-      //   this.token.loginName = this.form.loginName
-      //   this.token.nickyName = this.form.nickyName
-      //   this.token.phone = this.form.phone
-      //   this.token.email = this.form.email
-      //   // this.$router.push('/person')
-      // })
+      if (this.fileList.length !== 0) {
+        this.form.file = this.fileList[0].file
+        //console.log(this.form)
+        this.post(this.url.save, this.form, () => {
+          //console.log(response)
+        })
+      } else {
+        this.$notify({type: 'warning', message: '头像不能为空'})
+      }
     },
     onFailed() {
       this.$notify({type: 'warning', message: '请正确输入内容!'})

@@ -60,7 +60,7 @@
     </div>
 
     <div class="other">
-      <van-cell title="收货地址管理" is-link class="text"/>
+      <van-cell @click="toAddress" title="收货地址管理" is-link class="text"/>
       <van-cell @click="showPopup" title="退出登录" is-link class="text"/>
       <van-popup v-model="show" round position="bottom">
         <van-button @click="exit" type="danger" size="large">确认退出</van-button>
@@ -74,7 +74,11 @@
 export default {
   name: "Person",
   data() {
+    const module = '/ums-user'
     return {
+      url: {
+        getone: module + '/getone'
+      },
       user: {
         name: '请登录',
         avatar: require('@/assets/unlogin.png'),
@@ -86,16 +90,26 @@ export default {
   created() {
     // console.log('check out')
     if (this.$store.getters.GET_TOKEN !== '') {
-      // console.log('token不为空')
+      //console.log('token不为空')
       this.token = this.$store.getters.GET_TOKEN
-      // console.log(this.token)
-      this.user.name = this.token.nickyName
-      this.user.avatar = 'http://192.168.80.66:9000/images/' + this.token.icon
+      //console.log(this.token)
+      this.get(this.url.getone, {id: this.token}, response => {
+        // console.log(response)
+        this.user.name = response.nickyName
+        this.user.avatar = this.img(response.icon)
+      })
     } else {
       // console.log('token为空')
     }
   },
   methods: {
+    toAddress(){
+      if (this.$store.getters.GET_TOKEN === '') {
+        this.$notify({type: 'warning', message: '还未登录'})
+      } else {
+        this.$router.push('/address')
+      }
+    },
     editUserInfo() {
       if (this.$store.getters.GET_TOKEN === '') {
         this.$notify({type: 'warning', message: '还未登录'})

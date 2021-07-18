@@ -68,6 +68,18 @@ const routes = [
         name: 'ForgotPassword',
         component: () => import('../views/login/forgotPassword')
     },
+    {
+        path: '/address',
+        name: 'Address',
+        component: () => import('../views/person/address')
+    },
+    {
+        path: '/addressEdit',
+        name: 'AddressEdit',
+        component: () => import('../views/person/addressEdit'),
+        // 如果props设置为true，$route.params将被设置为组件属性
+        //props: true
+    },
 ]
 
 const router = new VueRouter({

@@ -1,0 +1,122 @@
+<template>
+  <div>
+    <nav-bar :title="'地址列表'" :back-to="'/person'" :left-text="'返回'" :is-arrow="true"/>
+    <van-address-list
+        v-model="chosenAddressId"
+        :list="list"
+        :disabled-list="disabledList"
+        disabled-text="以下地址超出配送范围"
+        default-tag-text="默认"
+        @add="onAdd"
+        @edit="onEdit"
+        @select="onSelect"
+    />
+  </div>
+</template>
+
+<script>
+import {Toast} from "vant";
+import NavBar from '@/components/common/NavBar.vue'
+
+export default {
+  name: "Address",
+  components: {
+    NavBar
+  },
+  data() {
+    const module = '/ums-address'
+    return {
+      //存放地址列表的数组
+      addList: [],
+      token: [],
+      url: {
+        list: module + '/list'
+      },
+      chosenAddressId: '',
+      //显示在页面上的地址列表数组
+      list: [],
+      disabledList: [
+        {
+          id: '3',
+          name: '王五',
+          tel: '1320000000',
+          address: '浙江省杭州市滨江区江南大道 15 号',
+        },
+      ],
+    };
+  },
+  created() {
+    //console.log(this.chosenAddressId)
+    this.getByUserId()
+    //console.log(this.list)
+  },
+  methods: {
+    onAdd() {
+      Toast('新增地址');
+      this.$router.push({
+        path: '/addressEdit',
+        query: {
+          addressId: "-1"
+        }
+      })
+    },
+    onEdit(item, index) {
+      Toast('编辑地址:' + item.id);
+      //console.log(this.list)
+      //console.log(item.id)
+      for (let addListKey in this.addList) {
+        if (this.addList[addListKey].id === item.id) {
+          //console.log(this.addList[addListKey])
+          this.$router.push({
+            path: '/addressEdit',
+            query: {
+              addressId: item.id
+            }
+          })
+        }
+      }
+    },
+    onSelect(item, index) {
+      Toast('切换到:' + item.name);
+      //切换默认地址的方法
+    },
+    getByUserId() {
+      this.token = this.$store.getters.GET_TOKEN
+      this.get(this.url.list, {userId: this.token}, response => {
+        //console.log(response)
+        this.addList = response
+        // console.log(this.addList)
+        this.addToList(this.addList)
+      })
+    },
+    addToList(allList) {
+      for (let listKey in allList) {
+        if (allList[listKey].isDefault === 1) {
+          this.chosenAddressId = allList[listKey].id
+          this.list.push({
+            id: allList[listKey].id,
+            name: allList[listKey].name,
+            tel: allList[listKey].tel,
+            address: allList[listKey].addressDetail,
+            isDefault: true
+          })
+        }
+      }
+      for (let listKey in allList) {
+        if (allList[listKey].isDefault !== 1) {
+          this.list.push({
+            id: allList[listKey].id,
+            name: allList[listKey].name,
+            tel: allList[listKey].tel,
+            address: allList[listKey].addressDetail
+          })
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
