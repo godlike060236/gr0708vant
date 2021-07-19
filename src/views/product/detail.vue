@@ -164,9 +164,7 @@ export default {
       })
     },
     onClickLeft() {
-      this.$router.push({
-        path: '/product',
-      })
+      this.$router.go(-1)
     },
     onClickIcon() {
       this.$router.push({

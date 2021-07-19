@@ -30,6 +30,7 @@
             label="密码"
             placeholder="请输入密码"
             :rules="[{ required: true, message: '请填写密码' }]"
+            autocomplete="true"
         >
           <template #left-icon>
             <van-icon name="edit"></van-icon>
@@ -78,6 +79,14 @@ export default {
       this.post(this.url.login, this.loginForm, response => {
         // console.log(response)
         this.$store.commit('SET_TOKEN', response.token)
+        this.get("/ums-address/list", {userId: this.$store.getters.GET_TOKEN}, response => {
+          // console.log(response)
+          for(let i = 0;i<response.length;i++){
+            if(response[i].isDefault === 1){
+              this.$store.commit('SET_ADDRESS', response[i])
+            }
+          }
+        })
         this.$router.push('/person')
       })
     },

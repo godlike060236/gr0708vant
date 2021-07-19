@@ -80,6 +80,21 @@ const routes = [
         // 如果props设置为true，$route.params将被设置为组件属性
         //props: true
     },
+    {
+        path: '/order',
+        name: 'Order',
+        component: () => import('../views/order')
+    },
+    {
+        path: '/orderAddress',
+        name: 'OrderAddress',
+        component: () => import('../views/order/address')
+    },
+    {
+        path: '/orderAddressEdit',
+        name: 'OrderAddressEdit',
+        component: () => import('../views/order/addressEdit')
+    },
 ]
 
 const router = new VueRouter({

@@ -21,9 +21,15 @@
           </van-col>
           <van-col span="22">
             <van-swipe-cell>
-              <van-card :price="item.price" :title="item.name" :thumb="img(item.icon)" class="goods-card">
+              <van-card :price="item.price" :title="item.name" :thumb="img(item.icon)" class="goods-card" @click="onClick(item.productId)">
+                <template #tags>
+                  <van-tag plain type="danger" style="margin-right: 10px;margin-top: 10px">
+                    {{ JSON.parse(item.sku)[0].value }}
+                  </van-tag>
+                  <van-tag plain type="danger">{{ JSON.parse(item.sku)[1].value }}</van-tag>
+                </template>
                 <template #num>
-                  <van-stepper theme="round" v-model="item.number" disable-input @change="onNum"/>
+                  <van-stepper theme="round" v-model="item.number" disable-input @change="onNum" button-size="20px"/>
                 </template>
               </van-card>
               <template #right>
@@ -37,13 +43,15 @@
     <div style="height: 55px"></div>
 
     <!-- vant提交订单栏 -->
-    <van-submit-bar :price="total" button-text="提交订单">
+    <van-submit-bar :price="total" button-text="结算" @submit="submit">
       <van-checkbox v-model="checkedAll" @click="onAll">全选</van-checkbox>
     </van-submit-bar>
   </div>
 </template>
 
 <script>
+import {Notify} from "vant";
+
 export default {
   name: 'CartList',
   data() {
@@ -56,14 +64,10 @@ export default {
       isShow: false,
       url: {
         list: module + '/list',
-
         getone: module + '/getone',
-
         del: module + '/del',
-
         update: module + '/update',
       },
-
     }
   },
 
@@ -106,7 +110,6 @@ export default {
         this.result = []
       }
     },
-
     del(id) {
       this.$dialog.confirm({
         title: '提示',
@@ -139,6 +142,24 @@ export default {
     back() {
       this.$router.push({
         path: '/product'
+      })
+    },
+    submit() {
+      if (this.result.length > 0) {
+        this.$store.commit("SET_ORDER", this.result)
+        this.$router.push({
+          path: '/order'
+        })
+      } else {
+        this.$notify({type: 'warning', message: '订单为空!'})
+      }
+    },
+    onClick(productId){
+      this.$router.push({
+        path: '/detail',
+        query: {
+          productId: productId,
+        },
       })
     }
   }

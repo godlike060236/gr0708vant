@@ -107,7 +107,9 @@ export default {
       if (this.$store.getters.GET_TOKEN === '') {
         this.$notify({type: 'warning', message: '还未登录'})
       } else {
-        this.$router.push('/address')
+        this.$router.push({
+          path: '/address',
+        })
       }
     },
     editUserInfo() {
