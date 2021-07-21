@@ -95,6 +95,16 @@ const routes = [
         name: 'OrderAddressEdit',
         component: () => import('../views/order/addressEdit')
     },
+    {
+        path: '/orderHistory',
+        name: 'OrderHistory',
+        component: () => import('../views/history/orderHistory')
+    },
+    {
+        path: '/changePassword',
+        name: 'ForgotPassword',
+        component: () => import('../views/login/changePassword')
+    },
 ]
 
 const router = new VueRouter({

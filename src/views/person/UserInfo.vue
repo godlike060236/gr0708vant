@@ -98,7 +98,7 @@ export default {
     }
   },
   created() {
-    if (this.$store.getters.GET_TOKEN !== '') {
+    if (this.$store.getters.GET_TOKEN !== null) {
       this.token = this.$store.getters.GET_TOKEN
       // console.log(this.token)
       this.get(this.url.getone, {id: this.token}, response => {

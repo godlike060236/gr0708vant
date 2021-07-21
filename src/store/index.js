@@ -13,6 +13,8 @@ export default new Vuex.Store({
         token: '',
         shopOrderList: [],  // 购物车去结算的时候存入vuex
         temporaryAddress: '',   // 结算时候选择的地址
+        browsingHistory: [],    // 浏览的历史记录
+        singleOrder: '',  // 直接支付时的单条商品记录
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -24,6 +26,25 @@ export default new Vuex.Store({
         SET_ADDRESS(state, temporaryAddress) {
             state.temporaryAddress = temporaryAddress
         },
+        SET_SINGLEORDER(state, singleOrder) {
+            state.singleOrder = singleOrder
+        },
+        addHistory(state, history) {
+            if (state.browsingHistory.length === 0) {
+                state.browsingHistory.push(history)
+            } else {
+                let flag = state.browsingHistory.findIndex(item => item === history)
+                if(flag === -1){
+                    state.browsingHistory.push(history)
+                }
+            }
+        },
+        resetState(state) {
+            state.token = ''
+            state.temporaryAddress = ''
+            state.shopOrderList = []
+            state.browsingHistory = []
+        },
     },
     getters: {
         GET_TOKEN(state) {
@@ -34,6 +55,12 @@ export default new Vuex.Store({
         },
         GET_ADDRESS(state) {
             return state.temporaryAddress
+        },
+        GET_HISTORY(state) {
+            return state.browsingHistory
+        },
+        GET_SINGLEORDER(state) {
+            return state.singleOrder
         },
     }
 })

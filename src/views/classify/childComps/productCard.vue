@@ -2,7 +2,6 @@
   <div class="product-item">
     <van-card
         @click="itemClick(item.id)"
-        num="3"
         :price="item.price"
         desc="商品介绍"
         :title="item.name"

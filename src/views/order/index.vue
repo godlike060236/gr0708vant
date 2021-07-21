@@ -29,7 +29,10 @@
         <van-card :price="item.price" :title="item.name"
                   :num="item.number" :thumb="img(item.icon)" class="goods-card">
           <template #tags>
-            <van-tag plain type="danger" style="margin-right: 10px;margin-top: 10px">{{ JSON.parse(item.sku)[0].value }}</van-tag>
+            <van-tag plain type="danger" style="margin-right: 10px;margin-top: 10px">{{
+                JSON.parse(item.sku)[0].value
+              }}
+            </van-tag>
             <van-tag plain type="danger">{{ JSON.parse(item.sku)[1].value }}</van-tag>
           </template>
         </van-card>
@@ -45,7 +48,19 @@ import Item from "../../components/product/Item"
 export default {
   name: "Order",
   data() {
+    const baseUrl = '/ums-order'
     return {
+      url: {
+        add: baseUrl + '/add'
+      },
+      cartList: [],
+      form: {
+        userId: null,
+        addressId: null,
+        productIds: [],
+        isDeliver: null,
+        isFinish: null,
+      },
       caitiao: require('../../assets/caitiao.jpg'),
       temporaryAddress: '',
       orders: [],
@@ -84,7 +99,21 @@ export default {
       })
     },
     onSubmit() {
+      this.form.userId = this.$store.getters.GET_TOKEN;
+      this.form.addressId = this.$store.getters.GET_ADDRESS.id
+      this.form.isDeliver = 0;
+      this.form.isFinish = 0;
+      let productIds = []
+      for (let i = 0; i < this.orders.length; i++) {
+        productIds.push(this.orders[i].id)
+      }
+      this.form.productIds = productIds
+      this.post(this.url.add, this.form, (response) => {
 
+      })
+      this.$router.push({
+        path: '/orderHistory'
+      })
     },
     back() {
       this.$router.push({
@@ -97,7 +126,9 @@ export default {
       })
     },
     goAddress() {
-
+      this.$router.push({
+        path: '/orderAddress',
+      })
     }
   },
 }

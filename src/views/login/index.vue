@@ -78,6 +78,7 @@ export default {
     handlerLogin() {
       this.post(this.url.login, this.loginForm, response => {
         // console.log(response)
+        this.$store.commit("resetState")
         this.$store.commit('SET_TOKEN', response.token)
         this.get("/ums-address/list", {userId: this.$store.getters.GET_TOKEN}, response => {
           // console.log(response)

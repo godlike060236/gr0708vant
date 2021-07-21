@@ -21,7 +21,8 @@
           </van-col>
           <van-col span="22">
             <van-swipe-cell>
-              <van-card :price="item.price" :title="item.name" :thumb="img(item.icon)" class="goods-card" @click="onClick(item.productId)">
+              <van-card :price="item.price" :title="item.name" :thumb="img(item.icon)" class="goods-card"
+                        @click="onClick(item.productId)">
                 <template #tags>
                   <van-tag plain type="danger" style="margin-right: 10px;margin-top: 10px">
                     {{ JSON.parse(item.sku)[0].value }}
@@ -87,7 +88,7 @@ export default {
 
   methods: {
     getCarts() {
-      this.get(this.url.list, this.query, response => {
+      this.get(this.url.list, {active: 1}, response => {
         this.carts = response
         this.isShow = this.carts.length <= 0;
       })
@@ -154,7 +155,7 @@ export default {
         this.$notify({type: 'warning', message: '订单为空!'})
       }
     },
-    onClick(productId){
+    onClick(productId) {
       this.$router.push({
         path: '/detail',
         query: {

@@ -32,13 +32,13 @@
         </van-grid-item>
         <van-grid-item>
           <div class="num">0</div>
-          <div class="text">我的足迹</div>
+          <div class="text" @click="showHistory">我的足迹</div>
         </van-grid-item>
       </van-grid>
     </div>
 
     <div class="order">
-      <van-cell title="我的订单" is-link/>
+      <van-cell @click="toOrder" title="我的订单" is-link/>
       <van-grid :border="false" :column-num="4">
         <van-grid-item>
           <van-icon name="like-o"></van-icon>
@@ -100,11 +100,12 @@ export default {
       })
     } else {
       // console.log('token为空')
+      this.$notify({type: 'warning', message: '请登录'})
     }
   },
   methods: {
     toAddress(){
-      if (this.$store.getters.GET_TOKEN === '') {
+      if (this.$store.getters.GET_TOKEN === '' || this.$store.getters.GET_TOKEN === null) {
         this.$notify({type: 'warning', message: '还未登录'})
       } else {
         this.$router.push({
@@ -113,14 +114,14 @@ export default {
       }
     },
     editUserInfo() {
-      if (this.$store.getters.GET_TOKEN === '') {
+      if (this.$store.getters.GET_TOKEN === '' || this.$store.getters.GET_TOKEN === null) {
         this.$notify({type: 'warning', message: '还未登录'})
       } else {
         this.$router.push('/userInfo')
       }
     },
     toLogin() {
-      if (this.$store.getters.GET_TOKEN === '') {
+      if (this.$store.getters.GET_TOKEN === '' || this.$store.getters.GET_TOKEN === null) {
         this.$router.push('/login')
       } else {
         this.$notify({type: 'warning', message: '已经登录！无需再登录'})
@@ -133,16 +134,23 @@ export default {
       return new Promise((resolve) => setTimeout(resolve, d))
     },
     async exit() {
-      if (this.$store.getters.GET_TOKEN === '') {
+      if (this.$store.getters.GET_TOKEN === '' || this.$store.getters.GET_TOKEN === null) {
         this.$notify({type: 'warning', message: '还未登录'})
       } else {
         console.log("exit")
-        this.$store.commit('SET_TOKEN', '')
+        this.$store.commit("resetState")
         this.$notify({type: 'success', message: '已经成功退出登录'})
         await this.sleep(1000)
         this.$router.go(0)
       }
+    },
+    showHistory(){
 
+    },
+    toOrder(){
+      this.$router.push({
+        path: '/orderHistory'
+      })
     }
   }
 }

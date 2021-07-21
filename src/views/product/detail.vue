@@ -56,7 +56,6 @@ export default {
         skuId: '',
         productId: '',
         name: '',
-        skuList: [],
         number: '',
         price: '',
         icon: '',
@@ -97,6 +96,7 @@ export default {
     getProduct() {
       this.get(this.url.getProduct, {id: this.productId}, (response) => {
         this.product = response
+        this.$store.commit("addHistory",this.product.id)
         this.cartList.name = this.product.name
         this.cartList.icon = this.product.img
         this.productImg = {
@@ -160,8 +160,27 @@ export default {
       }
       this.cartList.number = this.$refs.getSkuData.selectedNum
       this.post('/cart-stock/add', this.cartList, (response) => {
-        this.show = false
       })
+      this.show = false
+    },
+    onClickButton() {
+      // this.cartList.productId = this.productId
+      // for (let i = 0; i < this.sku.list.length; i++) {
+      //   if (this.$refs.getSkuData.selectedSkuComb.id === this.sku.list[i].id) {
+      //     this.cartList.skuId = this.sku.list[i].id
+      //     this.cartList.price = this.sku.list[i].price / 100
+      //     this.cartList.sku = this.sku.list[i].skuList
+      //     /* console.log(this.$refs.getSkuData.getSkuData().selectedSkuComb.id) */
+      //   }
+      // }
+      // this.cartList.number = this.$refs.getSkuData.selectedNum
+      // this.post('/cart-stock/add', this.cartList, (response) => {
+      //   this.$store.commit("SET_SINGLEORDER",this.cartList)
+      // })
+      // this.$router.push({
+      //   path: '/order',
+      // })
+      // this.show = false
     },
     onClickLeft() {
       this.$router.go(-1)
@@ -170,9 +189,6 @@ export default {
       this.$router.push({
         path: '/cart'
       })
-    },
-    onClickButton() {
-      Toast('点击按钮');
     },
     onBuyClicked() {
     },
